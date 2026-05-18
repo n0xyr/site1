@@ -1,357 +1,87 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>n0xyr</title>
+  <title>Albayrak Tim</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://i.hizliresim.com/7uuzapy.png" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    body {
-      background: black;
-      overflow: hidden;
-      font-family: 'Orbitron', sans-serif;
-      color: white;
-      height: 100vh;
+    html, body{
+      width:100%;
+      height:100%;
+      overflow:hidden; /* Kaymayı engeller */
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+    body{
+      background:#000;
+      color:#fff;
+      font-family:Arial, Helvetica, sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
     }
 
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: 1;
+    .container{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:15px;
+      padding:20px;
     }
 
-    .container {
-      position: relative;
-      z-index: 2;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
+    .logo{
+      width:220px;
+      max-width:80%;
+      user-select:none;
+      pointer-events:none;
     }
 
-    .profile-img {
-      width: 280px;
-      max-width: 90%;
-      border-radius: 18px;
-      border: 3px solid #ff0000;
-      box-shadow: 0 0 20px red;
-      animation: pulse 2s infinite;
+    h1{
+      font-size:42px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:#ffffff;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px red; }
-      50% { box-shadow: 0 0 35px red; }
-      100% { box-shadow: 0 0 10px red; }
+    .subtitle{
+      font-size:20px;
+      color:red;
+      font-weight:bold;
+      letter-spacing:3px;
     }
 
-    .glitch {
-      position: relative;
-      margin-top: 25px;
-      font-size: 3rem;
-      color: white;
-      text-transform: lowercase;
-      animation: flicker 2s infinite;
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .glitch::before {
-      left: 2px;
-      text-shadow: -2px 0 red;
-      animation: glitchTop 1s infinite linear alternate-reverse;
-    }
-
-    .glitch::after {
-      left: -2px;
-      text-shadow: 2px 0 cyan;
-      animation: glitchBottom 1.5s infinite linear alternate-reverse;
-    }
-
-    @keyframes glitchTop {
-      0% { clip-path: inset(0 0 80% 0); }
-      50% { clip-path: inset(10% 0 50% 0); }
-      100% { clip-path: inset(80% 0 0 0); }
-    }
-
-    @keyframes glitchBottom {
-      0% { clip-path: inset(80% 0 0 0); }
-      50% { clip-path: inset(40% 0 30% 0); }
-      100% { clip-path: inset(0 0 80% 0); }
-    }
-
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.85; }
-    }
-
-    .typing {
-      margin-top: 18px;
-      font-size: 1.1rem;
-      color: #cfcfcf;
-      border-right: 2px solid red;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 0;
-      animation: typing 5s steps(40,end) forwards, blink .7s infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 420px; }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-
-    .terminal {
-      margin-top: 35px;
-      width: 90%;
-      max-width: 750px;
-      background: rgba(0,0,0,0.8);
-      border: 1px solid #00ff00;
-      border-radius: 12px;
-      padding: 18px;
-      text-align: left;
-      box-shadow: 0 0 25px rgba(0,255,0,0.3);
-      font-family: monospace;
-      color: #00ff00;
-      backdrop-filter: blur(6px);
-    }
-
-    .line {
-      opacity: 0;
-      animation: appear 1s forwards;
-    }
-
-    .line:nth-child(1) { animation-delay: 1s; }
-    .line:nth-child(2) { animation-delay: 2s; }
-    .line:nth-child(3) { animation-delay: 3s; }
-    .line:nth-child(4) { animation-delay: 4s; }
-    .line:nth-child(5) { animation-delay: 5s; }
-
-    @keyframes appear {
-      to { opacity: 1; }
-    }
-
-    .warning {
-      margin-top: 25px;
-      color: red;
-      font-size: 1rem;
-      letter-spacing: 3px;
-      animation: pulseText 1.5s infinite;
-    }
-
-    @keyframes pulseText {
-      0% { opacity: 0.5; }
-      50% { opacity: 1; }
-      100% { opacity: 0.5; }
-    }
-
-    .socials {
-      margin-top: 20px;
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .socials a {
-      width: 65px;
-      height: 65px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(6px);
-      transition: 0.35s ease;
-      box-shadow: 0 0 15px rgba(255,0,0,0.15);
-      text-decoration: none;
-    }
-
-    .socials a img {
-      width: 34px;
-      height: 34px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 6px rgba(255,255,255,0.5));
-    }
-
-    .socials a:hover {
-      transform: translateY(-6px) scale(1.08);
-      border-color: red;
-      box-shadow: 0 0 25px rgba(255,0,0,0.5);
-      background: rgba(255,0,0,0.08);
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 15px;
-      color: rgba(255,255,255,0.4);
-      font-size: 12px;
-      letter-spacing: 2px;
-    }
-
-    audio {
-      display: none;
-    }
-
-    @media(max-width: 600px){
-      .glitch {
-        font-size: 2rem;
-      }
-
-      .typing {
-        font-size: 0.9rem;
-        width: 100% !important;
-        animation: none;
-        border: none;
-      }
-
-      .terminal {
-        font-size: 0.8rem;
-      }
+    p{
+      font-size:18px;
+      color:#bdbdbd;
+      max-width:900px;
+      line-height:1.7;
     }
   </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
-<div class="overlay"></div>
+  <div class="container">
+    <img src="https://i.hizliresim.com/7uuzapy.png" alt="Logo" class="logo">
 
-<div class="container">
+    <h1>Albayrak Tim</h1>
 
-  <img class="profile-img" src="https://i.hizliresim.com/inka3xj.jpg" alt="n0xyr">
+    <div class="subtitle">TÜRKÜN SİBER GÜCÜ</div>
 
-  <h1 class="glitch" data-text="hacked by n0xyr">hacked by n0xyr</h1>
-
-  <div class="typing">
-    Access denied? Then watch me.
+    <p>
+      Tigin Alp Kağan - Wostarex - Mimar Sinan - #VSCF ROOTGHOST - Baybars - Kürşad
+    </p>
   </div>
-
-  <div class="socials">
-    <a href="#" onclick="copyDiscord()" title="Discord">
-      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
-    </a>
-
-    <a href="https://x.com/n0xyrsec" target="_blank" title="X">
-      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="X">
-    </a>
-
-    <a href="https://www.youtube.com/@n0xyrsec" target="_blank" title="YouTube">
-      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-    </a>
-
-    <a href="https://kick.com/n0xyrsec" target="_blank" title="Kick">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAQlBMVEUAAABT/BlW/xoiZwofXwk3pxEmcws2oxA4qhErgw0jbAshYwoVPwZZ/xs5rRFAwhMNJwQYSgc/vxMndwspfQwXRgehLKXxAAABi0lEQVR4nO3dW3KCQBBAUcUXAQSMyf63mm8dqwJTo2B77gK66nw2DMNmI0mSJEmSJEmSJKlwY7ufX9tNmNxlTR6LC5tzNb9zP2FynzW5KS7cVdv5VYcJkw9Zk3eEhISEhISEhISEhISEby28XI+3NUMwYZ1u9BmD1yw8ZYEICQkJCQkJCQkJCQkJ31s4NPcb/Xcs4fbBG/giwPUInxYhIeHyERISLh8hIeHyERKuTpie8w4mrIZDfVv/G0xY/mT+2oRHQkJCQkJCQkJCQkJCwhSUbPTXWMJqON1VX4IJf17gWVb4RUhISEhISEhISEhISDhBGH8/DL/jx39O84Ac7VkbISEhISEhISEhISHhc4Txz3mHP6sf/3uLtHDfzCQREhIuHyEh4fIREhIuH+HLhOHva4t/594H3JtISEhISEhISEhISEhImCeM/9+1+P/OS4v2/0NCQkJCQkJCQkJCQsLYwibdzf/v3E+Y3GdNLn96f2z382u7CZO7rMljcaEkSZIkSZIkSZL08f0BC65haLBnc5cAAAAASUVORK5CYII=" alt="Kick">
-    </a>
-  </div>
-
-  <div class="terminal">
-    <div class="line">root@n0xyr:~# initializing system...</div>
-    <div class="line">root@n0xyr:~# bypassing firewall...</div>
-    <div class="line">root@n0xyr:~# injecting payload...</div>
-    <div class="line">root@n0xyr:~# access granted.</div>
-    <div class="line">root@n0xyr:~# welcome to the void.</div>
-  </div>
-
-  <div class="warning">
-    SYSTEM OVERRIDE ACTIVE
-  </div>
-
-  <div class="footer">
-    n0xyr cyber interface
-  </div>
-
-</div>
-
-<script>
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%^&*';
-  const fontSize = 16;
-  const columns = canvas.width / fontSize;
-
-  const drops = [];
-
-  for(let i = 0; i < columns; i++) {
-    drops[i] = 1;
-  }
-
-  function draw() {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#0F0';
-    ctx.font = fontSize + 'px monospace';
-
-    for(let i = 0; i < drops.length; i++) {
-      const text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-
-      drops[i]++;
-    }
-  }
-
-  setInterval(draw, 35);
-
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
-
-  function copyDiscord() {
-    navigator.clipboard.writeText('n0xyrsec');
-
-    const warning = document.querySelector('.warning');
-    const oldText = warning.innerText;
-
-    warning.innerText = 'DISCORD USERNAME COPIED';
-
-    setTimeout(() => {
-      warning.innerText = oldText;
-    }, 2000);
-  }
-</script>
 
 </body>
 </html>
